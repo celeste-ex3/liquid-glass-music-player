@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Liquid Glass Music</title>
+  <link rel="icon" type="image/png" href="assets/img/spotify.png" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/glass.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/player.css" />
+  <link rel="stylesheet" href="css/library.css" />
+  <link rel="stylesheet" href="css/overlays.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="bg-layer" id="bgA"></div>
+    <div class="bg-layer" id="bgB"></div>
+    <div class="bg-overlay"></div>
+  </div>
+
+  <div class="app" id="app">
+    <div class="views">
+      <section class="view active" id="view-now" data-view="now" aria-label="Now playing">
+        <div class="now-playing">
+          <article class="player glass" aria-label="Player">
+            <div class="cover-wrap">
+              <img class="cover" id="cover" alt="" crossorigin="anonymous" />
+              <div class="cover-placeholder" id="coverPlaceholder">
+                <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                </svg>
+              </div>
+            </div>
+            <div class="meta">
+              <h1 id="title">Nothing playing</h1>
+              <p id="artist">Select a track from your library</p>
+            </div>
+            <div class="progress">
+              <span id="current">0:00</span>
+              <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Seek" />
+              <span id="duration">0:00</span>
+            </div>
+            <div class="controls">
+              <button class="ctrl" id="shuffle" aria-label="Shuffle" title="Shuffle (S)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+                  <polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
+                  <line x1="4" y1="4" x2="9" y2="9"/>
+                </svg>
+              </button>
+              <button class="ctrl" id="prev" aria-label="Previous" title="Previous">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+              </button>
+              <button class="ctrl play" id="play" aria-label="Play" title="Play / Pause (Space)">
+                <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="ctrl" id="next" aria-label="Next" title="Next">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+              </button>
+              <button class="ctrl" id="repeat" aria-label="Repeat" title="Repeat (R)">
+                <svg id="repeatIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                  <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                </svg>
+                <span class="repeat-badge" id="repeatBadge"></span>
+              </button>
+            </div>
+            <div class="extras">
+              <button class="fav-btn" id="favBtn" aria-label="Add to favorites" title="Favorite (F)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </button>
+              <div class="volume-wrap">
+                <button class="mute-btn" id="muteBtn" aria-label="Mute" title="Mute (M)">
+                  <svg id="muteIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                  </svg>
+                </button>
+                <input type="range" id="volume" min="0" max="100" value="80" aria-label="Volume" />
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-library" data-view="library" aria-label="Library">
+        <div class="sheet">
+          <div class="sheet-head">
+            <h2>Library</h2>
+            <button class="icon-btn" id="newPlaylistBtn" aria-label="Create playlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+          </div>
+          <div class="nav-row" id="libraryChips">
+            <button class="chip active" data-filter="all">All Songs</button>
+            <button class="chip" data-filter="recent">Recently Played</button>
+          </div>
+          <div class="playlists-head"><span>Playlists</span></div>
+          <ul class="playlist-list" id="playlistList"></ul>
+          <div class="tracklist-wrap glass glass-strong" id="libraryListWrap">
+            <ul class="tracklist" id="libraryList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-favorites" data-view="favorites" aria-label="Favorites">
+        <div class="sheet">
+          <div class="sheet-head"><h2>Favorites</h2></div>
+          <div class="tracklist-wrap glass glass-strong">
+            <ul class="tracklist" id="favoritesList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-search" data-view="search" aria-label="Search">
+        <div class="sheet">
+          <div class="sheet-head"><h2>Search</h2></div>
+          <div class="search-wrap glass" id="searchWrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Songs or artists" autocomplete="off" />
+            <button type="button" id="searchClear" aria-label="Clear search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/>
+              </svg>
+            </button>
+          </div>
+          <div class="tracklist-wrap glass glass-strong">
+            <ul class="tracklist" id="searchList"></ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <button class="mini glass" id="mini" type="button" hidden>
+      <div class="mini-cover" id="miniCover"></div>
+      <div class="mini-meta">
+        <div class="mini-title" id="miniTitle">Nothing playing</div>
+        <div class="mini-artist" id="miniArtist">—</div>
+      </div>
+      <span class="mini-play" id="miniPlay" aria-hidden="true">
+        <svg id="miniPlayIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+    </button>
+
+    <nav class="tabbar glass" aria-label="Tabs">
+      <button class="tab active" data-tab="now">
+        <img src="assets/img/spotify.png" alt="" />
+        <span>Now</span>
+      </button>
+      <button class="tab" data-tab="library">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19V5"/><path d="M10 19V9"/><path d="M16 19V3"/><path d="M22 19V11"/>
+        </svg>
+        <span>Library</span>
+      </button>
+      <button class="tab" data-tab="favorites">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span>Liked</span>
+      </button>
+      <button class="tab" data-tab="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <span>Search</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="popover" id="popover" role="menu"></div>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal glass" id="modal">
+      <div class="modal-icon" id="modalIcon"></div>
+      <div class="modal-text">
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+      </div>
+      <input type="text" id="modalInput" maxlength="40" autocomplete="off" spellcheck="false" />
+      <div class="modal-actions">
+        <button class="modal-btn ghost" id="modalCancel" type="button">Cancel</button>
+        <button class="modal-btn primary" id="modalConfirm" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="loading-overlay" id="loading">
+    <div class="loading-inner">
+      <div class="liquid-orb-wrap">
+        <div class="liquid-orb">
+          <span class="liquid-orb-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+      <div class="loader-progress"><div class="loader-progress-fill" id="loaderFill"></div></div>
+      <div class="loading-label" id="loadingText">Loading your library…</div>
+    </div>
+  </div>
+
+  <audio id="audio" preload="metadata"></audio>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

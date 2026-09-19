@@ -1,0 +1,233 @@
+﻿.now-playing {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 18px 18px 8px;
+}
+
+.player {
+  width: min(440px, 100%);
+  padding: clamp(20px, 3vw, 34px);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vw, 24px);
+}
+
+.cover-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.32);
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: box-shadow 0.8s cubic-bezier(.4,0,.2,1);
+}
+
+.cover-wrap::after {
+  content: "";
+  pointer-events: none;
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), 0.25);
+  transition: box-shadow 0.8s;
+}
+
+.cover {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: opacity 0.38s ease, transform 0.55s cubic-bezier(.4, 0, .2, 1);
+}
+
+.cover.swap { opacity: 0; transform: scale(0.96); }
+
+.cover-placeholder {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: var(--text-dim);
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 100%);
+}
+
+.meta { text-align: center; min-width: 0; }
+
+.meta h1 {
+  font-size: clamp(1.18rem, 3.2vw, 1.6rem);
+  font-weight: 720;
+  letter-spacing: -0.022em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: color 0.6s;
+}
+
+.meta p {
+  margin-top: 5px;
+  font-size: clamp(0.85rem, 2vw, 0.96rem);
+  color: var(--text-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: color 0.6s;
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.73rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress span { min-width: 34px; }
+.progress span:last-child { text-align: right; }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%; height: 22px;
+  background: transparent; cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 99px;
+  background: rgba(255, 255, 255, 0.18);
+}
+input[type="range"]::-moz-range-track {
+  height: 4px; border-radius: 99px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%; background: #fff;
+  margin-top: -6px;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.28),
+              0 2px 10px rgba(0,0,0,0.45);
+  transition: box-shadow 0.2s;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px;
+  border-radius: 50%; border: none; background: #fff;
+}
+
+#seek {
+  height: 4px; margin: 9px 0;
+  border-radius: 99px;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--accent-rgb), 0.9) var(--p, 0%),
+    rgba(255,255,255,0.16) var(--p, 0%)
+  );
+  background-size: 100% 4px;
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  transition: background 0.1s;
+}
+#seek::-webkit-slider-runnable-track { background: transparent; }
+#seek::-moz-range-track { background: transparent; }
+
+.controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(10px, 2.2vw, 20px);
+}
+
+.ctrl {
+  position: relative;
+  width: 48px; height: 48px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  transition: background 0.15s, transform 0.12s, color 0.15s, box-shadow 0.2s;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ctrl:hover {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.28);
+}
+.ctrl:active { transform: scale(0.91); }
+.ctrl svg { width: 18px; height: 18px; }
+
+.ctrl.on {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.ctrl.play {
+  width: 70px; height: 70px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+  border: none;
+  box-shadow:
+    0 10px 32px rgba(255,255,255,0.18),
+    0 0 40px rgba(var(--accent-rgb), 0.28),
+    inset 0 1.5px 0 rgba(255,255,255,1);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: transform 0.15s, box-shadow 0.3s;
+}
+.ctrl.play:hover {
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(255,255,255,0.24), 0 0 50px rgba(var(--accent-rgb), 0.35);
+}
+.ctrl.play:active { transform: scale(0.91); }
+.ctrl.play svg { width: 28px; height: 28px; }
+
+.repeat-badge {
+  position: absolute; bottom: -2px; right: -2px;
+  min-width: 16px; height: 16px;
+  padding: 0 4px; border-radius: 8px;
+  font-size: 9px; font-weight: 800;
+  display: none; place-items: center;
+  background: var(--accent); color: #fff;
+}
+.ctrl.on .repeat-badge { display: grid; }
+
+.extras {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fav-btn {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--text-dim);
+  transition: color 0.2s, transform 0.15s;
+}
+.fav-btn:active { transform: scale(0.88); }
+.fav-btn svg { width: 20px; height: 20px; }
+.fav-btn.on { color: var(--accent); }
+.fav-btn.on svg { fill: var(--accent); filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.55)); }
+
+.volume-wrap {
+  flex: 1;
+  display: grid; grid-template-columns: 28px 1fr;
+  align-items: center; gap: 10px;
+  color: var(--text-dim);
+}
+
+.mute-btn {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border-radius: 8px;
+  transition: color 0.2s;
+}
+.mute-btn.muted { color: var(--accent); }
+.mute-btn svg { width: 18px; height: 18px; }
+
+@media (max-width: 520px) {
+  .now-playing { padding: 10px 12px 0; }
+  .player { padding: 16px; gap: 14px; border-radius: 24px; }
+  .ctrl.play { width: 60px; height: 60px; }
+  .ctrl.play svg { width: 24px; height: 24px; }
+}
