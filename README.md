@@ -52,32 +52,6 @@ A sleek and modern web music player with dynamic album art theming, smart metada
 - Display uses `aria-live` for screen reader announcements
 - Semantic HTML structure
 
-## Project Structure
-
-.
-├── index.html
-├── css/
-│   ├── tokens.css
-│   ├── glass.css
-│   ├── layout.css
-│   ├── player.css
-│   ├── library.css
-│   └── overlays.css
-├── js/
-│   ├── main.js
-│   ├── library.js
-│   ├── player.js
-│   ├── storage.js
-│   ├── theme.js
-│   ├── tracks.js
-│   └── ui.js
-└── assets/
-    ├── audio/
-    │   └── (your audio files)
-    └── img/
-        └── spotify.png
-
-
 ## Installation
 
 Because this project uses ES6 modules and fetches metadata over HTTP, you need to serve it through a local server. Opening `index.html` directly in your browser will not work due to CORS restrictions.
