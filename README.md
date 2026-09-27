@@ -77,4 +77,4 @@ Then open `http://localhost:8000` in your browser.
 ## Contact
 
 - GitHub: [@celeste-ex3](https://github.com/celeste-ex3)
-- LinkedIn: [Safyan Khan](https://www.linkedin.com/in/safyankhan/)
+- LinkedIn: [safyankhan](https://www.linkedin.com/in/safyankhan/)
