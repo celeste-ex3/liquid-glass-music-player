@@ -1,0 +1,1 @@
+store your songs audio here and use the same file name given here to the audio file in the "tracks.js" file inside the array.
